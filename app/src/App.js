@@ -22,6 +22,24 @@ class App extends Component {
 		});
 	}
 
+	enviaForm(event) {
+		event.preventDefault();
+
+		$.ajax({
+			url: 'http://localhost:8080/api/autores',
+			contentType: 'application/json',
+			dataType: 'json',
+			type: 'POST',
+			data: JSON.stringify({
+				nome: '',
+				email: '',
+				senha: ''
+			}),
+			success: retorno => console.log(retorno),
+			error: error => console.log(error)
+		});
+	}
+
 	render() {
 		return (
 			<div id="layout">
@@ -47,7 +65,7 @@ class App extends Component {
 					</div>
 					<div className="content" id="content">
 						<div className="pure-form pure-form-aligned">
-							<form className="pure-form pure-form-aligned">
+							<form className="pure-form pure-form-aligned" onSubmit={this.enviaForm} method="POST">
 								<div className="pure-control-group">
 									<label htmlFor="nome">Nome</label> 
 									<input id="nome" type="text" name="nome" value=""  />                  
