@@ -1,19 +1,25 @@
 import React, { Component } from 'react';
 import './css/pure-min.css';
 import './css/side-menu.css';
+import $ from 'jquery';
 
 class App extends Component {
 	constructor() {
 		super();
 		this.state = {
-			lista: [
-				{
-					nome: "Hugo Deiró",
-					email: "hugodeiro@gmail.com",
-					senha: "senha"
-				}
-			]
+			lista: []
 		};
+	}
+
+	componentDidMount() {
+		$.ajax({
+			url:"http://cdc-react.herokuapp.com/api/autores",
+			success: retorno => {
+				this.setState({
+					lista: retorno
+				});
+			}
+		});
 	}
 
 	render() {
@@ -73,7 +79,7 @@ class App extends Component {
 									{
 										this.state.lista.map(autor => {
 											return (
-												<tr>
+												<tr key={autor.id}>
 													<td>{autor.nome}</td>
 													<td>{autor.email}</td>
 												</tr>
