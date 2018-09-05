@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import InputComponent from '../InputComponent/InputComponent.js';
 import $ from 'jquery';
 import PubSub from 'pubsub-js';
+import ExceptionHandler from './../../utils/ExceptionHandler';
 
 export class AuthorForm extends Component {
 	constructor() {
@@ -30,8 +31,22 @@ export class AuthorForm extends Component {
 				email: this.state.email,
 				senha: this.state.senha
 			}),
-			success: payload => PubSub.publish('update-author-list', (payload.reverse())),
-			error: error => console.log(error)
+			success: payload => {
+                PubSub.publish('update-author-list', (payload.reverse()));
+                this.setState({
+                    nome: '',
+                    email: '',
+                    senha: ''
+                });
+            },
+			error: error => {
+                if (error.status === 400) {
+                    new ExceptionHandler(error.responseJSON);
+                }
+            },
+            beforeSend: () => {
+                PubSub.publish('clean-all-errors', {});
+            }
 		});
 	}
 
