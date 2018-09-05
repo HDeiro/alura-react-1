@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import InputComponent from '../InputComponent/InputComponent.js';
 import $ from 'jquery';
+import PubSub from 'pubsub-js';
 
 export class AuthorForm extends Component {
 	constructor() {
@@ -29,7 +30,7 @@ export class AuthorForm extends Component {
 				email: this.state.email,
 				senha: this.state.senha
 			}),
-			success: this.props.callbackUpdateList,
+			success: payload => PubSub.publish('update-author-list', (payload.reverse())),
 			error: error => console.log(error)
 		});
 	}
@@ -104,7 +105,6 @@ export class AuthorTable extends Component {
 export default class AuthorBox extends Component {
     constructor() {
         super();
-        this.updateList = this.updateList.bind(this);
 		this.state = {
 			lista: []
 		};
@@ -118,7 +118,9 @@ export default class AuthorBox extends Component {
 					lista: retorno.reverse()
 				});
 			}
-		});
+        });
+        
+        PubSub.subscribe('update-author-list', (topico, lista) => this.setState({lista}));
     }
 
     updateList(list) {
@@ -128,7 +130,7 @@ export default class AuthorBox extends Component {
     render() {
         return (
             <div className="content" id="content">
-                <AuthorForm callbackUpdateList={this.updateList}/>
+                <AuthorForm/>
                 <AuthorTable list={this.state.lista} />
             </div>
         );
