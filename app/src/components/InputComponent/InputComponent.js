@@ -8,7 +8,7 @@ export default class InputComponent extends Component {
     }
 
     componentWillMount() {
-        PubSub.subscribe('exception-handler', topic => {
+        PubSub.subscribe('clean-all-errors', topic => {
             this.setState({errorMessage: ''});
         });
 
