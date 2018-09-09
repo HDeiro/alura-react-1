@@ -8,9 +8,7 @@ export class AuthorForm extends Component {
 	constructor() {
 		super();
 		this.enviaForm = this.enviaForm.bind(this);
-		this.setNome = this.setNome.bind(this);
-		this.setEmail = this.setEmail.bind(this);
-		this.setSenha = this.setSenha.bind(this);
+		this.setInput = this.setInput.bind(this);
 		this.state = {
 			nome: '',
 			senha: '',
@@ -50,16 +48,8 @@ export class AuthorForm extends Component {
 		});
 	}
 
-	setNome(event) {
-		this.setState({nome: event.target.value});
-	}
-
-	setEmail(event) {
-		this.setState({email: event.target.value});
-	}
-
-	setSenha(event) {
-		this.setState({senha: event.target.value});
+    setInput(input, event) {
+        this.setState({[input]: event.target.value});
     }
     
     render() {
@@ -68,15 +58,18 @@ export class AuthorForm extends Component {
                 <form className="pure-form pure-form-aligned" onSubmit={this.enviaForm} method="POST">
                     <InputComponent label="Nome" 
                         id="nome" type="text" name="nome" 
-                        value={this.state.nome} onChange={this.setNome} />
+                        value={this.state.nome} 
+                        onChange={this.setInput(this, 'nome')} />
                         
                     <InputComponent label="E-mail" 
                         id="email" type="email" name="email" 
-                        value={this.state.email} onChange={this.setEmail} />
+                        value={this.state.email} 
+                        onChange={this.setInput(this, 'email')} />
                         
                     <InputComponent label="Senha" 
                         id="senha" type="password" name="senha" 
-                        value={this.state.senha} onChange={this.setSenha} />
+                        value={this.state.senha} 
+                        onChange={this.setInput(this, 'senha')} />
                         
                     <div className="pure-control-group">                                  
                         <label></label> 

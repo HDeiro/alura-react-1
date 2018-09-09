@@ -8,9 +8,7 @@ export class BookForm extends Component {
 	constructor() {
 		super();
 		this.enviaForm = this.enviaForm.bind(this);
-		this.setTitulo = this.setTitulo.bind(this);
-		this.setPreco = this.setPreco.bind(this);
-		this.setAutorId = this.setAutorId.bind(this);
+		this.setInput = this.setInput.bind(this);
 		this.state = {
 			titulo: '',
 			preco: '',
@@ -48,38 +46,37 @@ export class BookForm extends Component {
                 PubSub.publish('clean-all-errors', {});
             }
 		});
-	}
-
-	setTitulo(event) {
-		this.setState({titulo: event.target.value});
-	}
-
-	setPreco(event) {
-		this.setState({preco: event.target.value});
-	}
-
-	setAutorId(event) {
-		this.setState({autorId: event.target.value});
     }
     
+    setInput(input, event) {
+        this.setState({[input]: event.target.value});
+    }
+
     render() {
         return (
             <div className="pure-form pure-form-aligned">
                 <form className="pure-form pure-form-aligned" onSubmit={this.enviaForm} method="POST">
                     <InputComponent label="Título" 
                         id="titulo" type="text" name="titulo" 
-                        value={this.state.titulo} onChange={this.setTitulo} />
+                        value={this.state.titulo} 
+                        onChange={this.setInput.bind(this, 'titulo')} />
                         
                     <InputComponent label="Preço" 
                         id="preco" type="number" name="preco" 
-                        value={this.state.preco} onChange={this.setPreco} />
+                        value={this.state.preco} 
+                        onChange={this.setInput.bind(this, 'preco')} />
                     
                     <div className="pure-control-group">
                         <label htmlFor="autorId">Autor</label>
-                        <select value={this.state.autorId} name="autorId" id="autorId" onChange={this.setAutorId}>
+                        <select value={this.state.autorId} 
+                            name="autorId" 
+                            id="autorId" 
+                            onChange={this.setInput.bind(this, 'autorId')}>
                             <option value="">Selecione o Autor</option>
                             {
-                                this.props.autores.map(autor => <option  key={autor.id} value={autor.id}>{autor.nome}</option>)
+                                this.props.autores.map(autor => 
+                                    <option  key={autor.id} value={autor.id}>{autor.nome}</option>
+                                )
                             }
                         </select>
                     </div>
